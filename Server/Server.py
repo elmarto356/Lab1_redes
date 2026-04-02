@@ -96,17 +96,17 @@ def manejar_cliente(conn, addr):
                     usuarios[nombre_solicitado] = conn
                     nombre_usuario = nombre_solicitado
 
-                conn.sendall(f"NICK Exitoso {nombre_usuario}\n".encode("utf-8"))
+                conn.sendall(f"NICK Exitoso".encode("utf-8"))
                 mandar_log("CONNECT", f"usuario={nombre_usuario} ip={ip_cliente}")
                 broadcast(f"SERVER {nombre_usuario} se ha unido a la cantina\n", nombre_usuario)
 
             elif comando == "MSG":
                 if nombre_usuario is None:
-                    conn.sendall("ERROR NOT_REGISTERED\n".encode("utf-8"))
+                    conn.sendall("ERROR No registrado".encode("utf-8"))
                     mandar_log("ERROR", f"ip={ip_cliente} motivo=\"MSG sin NICK previo\"")
                     continue
                 if not argumento:
-                    conn.sendall("ERROR EMPTY_MSG\n".encode("utf-8"))
+                    conn.sendall("ERROR mensaje vacio".encode("utf-8"))
                     mandar_log("ERROR", f"usuario={nombre_usuario} motivo=\"MSG vacío\"")
                     continue
 
@@ -122,11 +122,11 @@ def manejar_cliente(conn, addr):
 
             elif comando == "DISCONNECT":
                 if nombre_usuario is None:
-                    conn.sendall("ERROR NOT_REGISTERED\n".encode("utf-8"))
+                    conn.sendall("ERROR NOT_REGISTERED".encode("utf-8"))
                     mandar_log("ERROR", f"ip={ip_cliente} motivo=\"DISCONNECT sin NICK\"")
                     continue
 
-                conn.sendall("OK DISCONNECT\n".encode("utf-8"))
+                conn.sendall("OK DISCONNECT".encode("utf-8"))
                 mandar_log("DISCONNECT", f"usuario={nombre_usuario} ip={ip_cliente}")
                 broadcast(f"SERVER {nombre_usuario} ha abandonado la cantina\n", nombre_usuario)
                 break
@@ -238,10 +238,9 @@ def iniciar_servidor_http():
 # ========================== MAIN ===================================
 
 def main():
-    hilo_http = threading.Thread(target=iniciar_servidor_http, daemon=True)
-    hilo_http.start()
-
     try:
+        hilo_http = threading.Thread(target=iniciar_servidor_http, daemon=True)
+        hilo_http.start()
         iniciar_servidor_tcp()
     except KeyboardInterrupt:
         print("Servidor detenido.")
