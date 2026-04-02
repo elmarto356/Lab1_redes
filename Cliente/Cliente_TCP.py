@@ -28,6 +28,8 @@ def enviar_mensaje(socket_cliente):
     while True:
         mensaje = input()
         if msg_format.match(mensaje):
+            if mensaje == "OK MSG\n":
+                continue
             socket_cliente.sendall(mensaje.encode('utf-8'))
         elif mensaje == "/users":
             solicitar_usuarios()
