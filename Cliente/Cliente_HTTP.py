@@ -31,7 +31,18 @@ def solicitar_usuarios():
     if len(partes) == 2:
         try:
             data = json.loads(partes[1])
-            print("Usuarios conectados:", data.get("users", []))
+            usuarios = data.get("users", [])
+            
+            if usuarios:
+                print("\n" + "="*70)
+                print("USUARIOS CONECTADOS".center(70))
+                print("="*70 + "\n")
+                
+                for i, user in enumerate(usuarios, 1):
+                    print(f"  {i}. {user}")
+                print("\n" + "-" * 70)
+            else:
+                print("No hay usuarios conectados.")
         except json.JSONDecodeError:
             print("Error al decodificar JSON.")
 
@@ -65,6 +76,22 @@ def solicitar_historial():
     if len(partes) == 2:
         try:
             data = json.loads(partes[1])
-            print("Historial:", data.get("history", []))
+            historial = data.get("history", [])
+            
+            if historial:
+                print("\n" + "="*70)
+                print("HISTORIAL DE MENSAJES".center(70))
+                print("="*70 + "\n")
+                
+                for i, msg in enumerate(historial, 1):
+                    user = msg.get("user", "Desconocido")
+                    message = msg.get("message", "")
+                    timestamp = msg.get("timestamp", "")
+                    
+                    print(f"[{i}] {user} ({timestamp})")
+                    print(f"    → {message}")
+                    print("-" * 70)
+            else:
+                print("No hay mensajes en el historial.")
         except json.JSONDecodeError:
             print("Error al decodificar JSON.")

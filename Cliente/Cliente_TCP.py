@@ -48,7 +48,7 @@ def iniciar_hilo(socket_cliente):
 
 # conexion de socket
 ip_destino = "0.tcp.sa.ngrok.io" # Cambiar esto por ip de ngrok
-puerto_destino = 17455
+puerto_destino = 11167
 socket_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket_cliente.connect((ip_destino, puerto_destino))
 
