@@ -40,7 +40,7 @@ def solicitar_usuarios():
 #Historial de mensajes
 def solicitar_historial():
     ip_destino = "127.0.0.1" # Cambiar esto por ip de ngrok
-    puerto_destino = 8081
+    puerto_destino = 8000
     socket_http = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_http.connect((ip_destino, puerto_destino))
     socket_http.sendall(request_history.encode('utf-8'))

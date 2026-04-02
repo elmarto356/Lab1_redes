@@ -4,7 +4,7 @@ from datetime import datetime
 
 # --- CONFIGURACIÓN ---
 UDP_IP = "0.0.0.0"  # Cambiar a NGROK ip
-UDP_PORT = 5500     # Cambiar puerto
+UDP_PORT = 7000     # Cambiar puerto
 LOG_FILE = "chat.log"
 
 def start_log_server():
