@@ -18,11 +18,15 @@ def start_log_server():
         print("      SEVER LOGGER ACTIVADO (UDP)      ")
         print(f" Puerto: {UDP_PORT} | Archivo: {LOG_FILE}")
 
+        sock.settimeout(1.0)
         while True:
             # Recepción de datos (Bloqueante hasta que llega un evento)
             # data: el mensaje enviado por el Servidor B
             # addr: (IP_origen, Puerto_origen)
-            data, addr = sock.recvfrom(4096)
+            try:
+                data, addr = sock.recvfrom(4096)
+            except socket.timeout:
+                continue
             
             # Procesamiento del mensaje
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

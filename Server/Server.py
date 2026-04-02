@@ -158,12 +158,16 @@ def iniciar_servidor_tcp():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((TCP_HOST, TCP_PORT))
     server_socket.listen(5)
+    server_socket.settimeout(1.0)
 
     print(f"[TCP] Servidor de chat escuchando en {TCP_HOST}:{TCP_PORT}")
     mandar_log("CONNECT", f"Servidor TCP iniciado en puerto {TCP_PORT}")
 
     while True:
-        conn, addr = server_socket.accept()
+        try:
+            conn, addr = server_socket.accept()
+        except socket.timeout:
+            continue
         hilo_cliente = threading.Thread(
             target=manejar_cliente,
             args=(conn, addr),
