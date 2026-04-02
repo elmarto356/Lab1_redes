@@ -60,7 +60,7 @@ while True:
     if nick_format.match(n):
         socket_cliente.sendall(n.encode('utf-8'))
         respuesta = socket_cliente.recv(1024).decode('utf-8')
-        if respuesta == "NICK_OK":
+        if respuesta == "NICK Exitoso":
             print("Registro exitoso! Ahora puedes enviar mensajes al chat.\n")
             iniciar_hilo(socket_cliente)
             enviar_mensaje(socket_cliente)

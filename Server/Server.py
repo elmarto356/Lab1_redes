@@ -96,7 +96,7 @@ def manejar_cliente(conn, addr):
                     usuarios[nombre_solicitado] = conn
                     nombre_usuario = nombre_solicitado
 
-                conn.sendall(f"OK NICK {nombre_usuario}\n".encode("utf-8"))
+                conn.sendall(f"NICK Exitoso {nombre_usuario}\n".encode("utf-8"))
                 mandar_log("CONNECT", f"usuario={nombre_usuario} ip={ip_cliente}")
                 broadcast(f"SERVER {nombre_usuario} se ha unido a la cantina\n", nombre_usuario)
 
