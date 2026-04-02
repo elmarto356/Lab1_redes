@@ -138,16 +138,14 @@ def manejar_cliente(conn, addr):
                     conn.sendall("ERROR UNKNOWN_CMD\n".encode("utf-8"))
                 mandar_log("ERROR", f"usuario={nombre_usuario or 'anon'} ip={ip_cliente} motivo=\"comando desconocido: {comando}\"")
 
-    except Exception as e:
+    except Exception as e: 
         mandar_log("ERROR", f"usuario={nombre_usuario or 'anon'} ip={ip_cliente} motivo=\"{e}\"")
 
-    # Limpieza
+    # eliminar usuario y la conexion
     if nombre_usuario:
         with lock:
             if nombre_usuario in usuarios:
                 del usuarios[nombre_usuario]
-        mandar_log("DISCONNECT", f"usuario={nombre_usuario} ip={ip_cliente} (limpieza)")
-        broadcast(f"SERVER {nombre_usuario} ha abandonado la cantina\n", nombre_usuario)
     conn.close()
 
 
