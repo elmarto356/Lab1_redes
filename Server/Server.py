@@ -5,9 +5,6 @@ import sys
 import re
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
-
-# ========================== CONFIGURACIÓN ==========================
-
 TCP_HOST = "0.0.0.0"
 TCP_PORT = 9000
 HTTP_HOST = "0.0.0.0"
