@@ -15,17 +15,10 @@ HTTP_PORT = 8000
 UDP_LOG_HOST = "127.0.0.1"
 UDP_LOG_PORT = 7000
 MAX_HISTORIAL = 50
-
-# ======================== ESTADO COMPARTIDO ========================
-
 lock = threading.Lock()
 usuarios = {}
 historial = []
-
-# ===================== CLIENTE UDP DE LOGS =========================
-
 udp_log_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
 
 def mandar_log(tipo_evento, mensaje_evento):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -37,9 +30,6 @@ def mandar_log(tipo_evento, mensaje_evento):
         )
     except Exception as e:
         print(f"[WARN] No se pudo enviar log UDP: {e}")
-
-
-# ===================== BROADCAST TCP ===============================
 
 def broadcast(mensaje, excluir_usuario=None):
     with lock:
@@ -54,9 +44,6 @@ def broadcast(mensaje, excluir_usuario=None):
             sock.sendall(mensaje.encode("utf-8"))
         except Exception:
             pass
-
-
-# ================ MANEJO DE CLIENTE TCP (un hilo) =================
 
 def manejar_cliente(conn, addr):
     ip_cliente = f"{addr[0]}:{addr[1]}"
@@ -148,9 +135,6 @@ def manejar_cliente(conn, addr):
                 del usuarios[nombre_usuario]
     conn.close()
 
-
-# ================== SERVIDOR TCP DE CHAT ===========================
-
 def iniciar_servidor_tcp():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -172,9 +156,6 @@ def iniciar_servidor_tcp():
             daemon=True
         )
         hilo_cliente.start()
-
-
-# ================== SERVIDOR HTTP DE CONSULTA ======================
 
 class ManejadorHTTP(BaseHTTPRequestHandler):
 
@@ -236,9 +217,6 @@ def iniciar_servidor_http():
     mandar_log("CONNECT", f"Servidor HTTP iniciado en puerto {HTTP_PORT}")
     httpd.serve_forever()
 
-
-# ========================== MAIN ===================================
-
 def main():
     try:
         hilo_http = threading.Thread(target=iniciar_servidor_http, daemon=True)
@@ -249,6 +227,4 @@ def main():
         mandar_log("DISCONNECT", "Servidor detenido por el usuario")
         udp_log_socket.close()
         sys.exit(0)
-
-
 main()
